@@ -2,6 +2,7 @@ const express=require("express");
 const router=express.Router();
 const user =require('../Models/User');
 const bcrypt=require("bcrypt");
+const resturant=require('../Models/Resturant');
 
 router.post("/",async(req,res)=>{
     const {Resturantname, Email, Password}=req.body;
@@ -16,6 +17,12 @@ router.post("/",async(req,res)=>{
     userdata.Resturantid=Resturantname;
     userdata.Email=Email;
     userdata.Password=hash;
+    const resturantdata=new resturant();
+    resturantdata.Email=Email;
+    resturantdata.resturntname=Resturantname;
+    resturantdata.menulist=[];
+    resturantdata.Comment=[];
+    await resturantdata.save()
     await userdata.save();
     return res.status(200).json({message:"success"})
     }
